@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -20,24 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    $credentials = $request->only('email', 'password');
-
-    if (Auth::attempt($credentials)) {
-        $user = $request->user();
-        $token = $user->createToken('mobile')->plainTextToken;
-        return response()->json([
-            'token' => $token,
-            'user' => $user,
-        ]);
-    }
-
-    throw ValidationException::withMessages([
-        'email' => ['As credenciais fornecidas estão incorretas.'],
-    ]);
-});
+Route::post('Teste', [RegisterController::class, 'Teste'])->name('Teste');
+Route::post('/Login', [AuthController::class, 'Auth']);
+Route::post('/register', 'App\Http\Controllers\Auth\RegisterController@register');
